@@ -1,14 +1,17 @@
 package com.btpj.compose.ui.basic
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.*
@@ -76,7 +79,16 @@ fun Item(item: String) {
         backgroundColor = MaterialTheme.colors.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 10.dp)
     ) {
-        Row {
+        Row(
+            modifier = Modifier
+                .padding(5.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessLow
+                    )
+                )
+        ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text("Hello")
                 Text(text = item)
@@ -94,10 +106,23 @@ fun Item(item: String) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 640
+)
 @Composable
 fun DefaultPreview() {
     AndroidPracticeTheme {
-        App()
+        ListScreen()
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320, heightDp = 640)
+@Composable
+fun WelcomeScreenPreview() {
+    AndroidPracticeTheme {
+        WelcomeScreen(onContinueClick = {})
     }
 }
